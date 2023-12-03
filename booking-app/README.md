@@ -1,4 +1,4 @@
-# Booking CLI  App
+# Ticket booking CLI  App
 
 ## About
 
