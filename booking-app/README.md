@@ -7,7 +7,7 @@ This CLI app simulates ticket booking
 ## How to use
 - Start by cloning this repository and navigate to the booking app directory
 ```bash
-  git clone <url> && cd bookin-app
+  git clone <url> && cd booking-app
 ```
 
 - Run the application
