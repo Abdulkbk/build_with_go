@@ -20,6 +20,7 @@ func main() {
 
 	c := flag.Bool("c", false, "count bytes")
 	l := flag.Bool("l", false, "count lines")
+	w := flag.Bool("w", false, "count words")
 
 	flag.Parse()
 
@@ -41,6 +42,18 @@ func main() {
 		}
 
 		fmt.Printf("%v %s", lines, filename)
+		return
+	}
+
+	if *w {
+		words := 0
+		scanner := bufio.NewScanner(file)
+		scanner.Split(bufio.ScanWords)
+		for scanner.Scan() {
+			words++
+		}
+
+		fmt.Printf("%v %s", words, filename)
 		return
 	}
 
