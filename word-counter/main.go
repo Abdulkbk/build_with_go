@@ -24,19 +24,21 @@ func main() {
 
 	flag.Parse()
 
+	scanner := bufio.NewScanner(file)
+
 	if *c {
-		file, err := os.ReadFile(filename)
-		if err != nil {
-			log.Fatalf("unable to read file: %v", err)
+		bytes := 0
+		scanner.Split(bufio.ScanBytes)
+		for scanner.Scan() {
+			bytes++
 		}
 
-		fmt.Printf("%v %s", len(file), filename)
+		fmt.Printf("%v %s", bytes, filename)
 		return
 	}
 
 	if *l {
 		lines := 0
-		scanner := bufio.NewScanner(file)
 		for scanner.Scan() {
 			lines++
 		}
@@ -47,7 +49,6 @@ func main() {
 
 	if *w {
 		words := 0
-		scanner := bufio.NewScanner(file)
 		scanner.Split(bufio.ScanWords)
 		for scanner.Scan() {
 			words++
