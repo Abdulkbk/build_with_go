@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"log"
 	"os"
 )
@@ -14,19 +15,28 @@ func getCount(scanType bufio.SplitFunc) int {
 		err  error
 	)
 
-	args := os.Args
+	reader := os.Stdin
+	stat, err := reader.Stat()
+	if err != nil {
+		log.Fatalf("error reading stats: %v", err)
+	}
+
+	args := flag.Args()
 
 	switch {
-	case len(args) > 1:
-		filename := args[1]
+	case len(args) > 0:
+		filename := args[0]
 		file, err = os.Open(filename)
 		if err != nil {
 			log.Fatalf("open file err: %v", err)
 		}
 		defer file.Close()
 
-	default:
+	case stat.Size() > 0:
 		file = os.Stdin
+
+	default:
+		log.Fatal("no source provided")
 	}
 
 	count := 0

@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	var filename string
+	filename := "test.tx"
 
 	c := flag.Bool("c", false, "count bytes")
 	l := flag.Bool("l", false, "count lines")
