@@ -21,6 +21,7 @@ func main() {
 	c := flag.Bool("c", false, "count bytes")
 	l := flag.Bool("l", false, "count lines")
 	w := flag.Bool("w", false, "count words")
+	m := flag.Bool("m", false, "count runes")
 
 	flag.Parse()
 
@@ -55,6 +56,17 @@ func main() {
 		}
 
 		fmt.Printf("%v %s", words, filename)
+		return
+	}
+
+	if *m {
+		runes := 0
+		scanner.Split(bufio.ScanRunes)
+		for scanner.Scan() {
+			runes++
+		}
+
+		fmt.Printf("%v %s", runes, filename)
 		return
 	}
 
