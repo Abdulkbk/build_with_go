@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"log"
@@ -10,13 +11,15 @@ import (
 func main() {
 	filename := "test.txt"
 
-	_, err := os.Open(filename)
+	file, err := os.Open(filename)
 	if err != nil {
 		log.Fatalf("unable to open file: %v", err)
 	}
 
+	defer file.Close()
+
 	c := flag.Bool("c", false, "count bytes")
-	// l := flag.Bool("l", false, "count lines")
+	l := flag.Bool("l", false, "count lines")
 
 	flag.Parse()
 
@@ -27,14 +30,18 @@ func main() {
 		}
 
 		fmt.Printf("%v %s", len(file), filename)
+		return
 	}
 
-	// if *l {
-	// 	lines := 0
-	// 	for i := range file {
+	if *l {
+		lines := 0
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+			lines++
+		}
 
-	// 	}
+		fmt.Printf("%v %s", lines, filename)
+		return
+	}
 
-	// 	fmt.Printf("%v %v", lines, filename)
-	// }
 }
