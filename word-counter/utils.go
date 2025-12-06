@@ -1,14 +1,25 @@
 package main
 
-import "bufio"
+import (
+	"bufio"
+	"log"
+	"os"
+)
 
 // getCount is a generalize function to get the actual number of
 // or counts of the element we are interested in.
-func getCount(scanner *bufio.Scanner, scanType bufio.SplitFunc) int {
+func getCount(filename string, scanType bufio.SplitFunc) int {
 	count := 0
-	scanner.Split(scanType)
 
-	for scanner.Scan() {
+	file, err := os.Open(filename)
+	if err != nil {
+		log.Fatalf("failed to open file: %v", err)
+	}
+
+	sc := bufio.NewScanner(file)
+	sc.Split(scanType)
+
+	for sc.Scan() {
 		count++
 	}
 

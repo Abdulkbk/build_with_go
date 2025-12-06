@@ -25,33 +25,37 @@ func main() {
 
 	flag.Parse()
 
-	sc := bufio.NewScanner(file)
-
 	if *c {
-		bytes := getCount(sc, bufio.ScanBytes)
+		bytes := getCount(filename, bufio.ScanBytes)
 		fmt.Printf("%v %s", bytes, filename)
 		return
 	}
 
 	if *l {
-		lines := getCount(sc, bufio.ScanLines)
+		lines := getCount(filename, bufio.ScanLines)
 
 		fmt.Printf("%v %s", lines, filename)
 		return
 	}
 
 	if *w {
-		words := getCount(sc, bufio.ScanWords)
+		words := getCount(filename, bufio.ScanWords)
 
 		fmt.Printf("%v %s", words, filename)
 		return
 	}
 
 	if *m {
-		runes := getCount(sc, bufio.ScanRunes)
+		runes := getCount(filename, bufio.ScanRunes)
 
 		fmt.Printf("%v %s", runes, filename)
 		return
 	}
 
+	bytes := getCount(filename, bufio.ScanBytes)
+	lines := getCount(filename, bufio.ScanLines)
+	words := getCount(filename, bufio.ScanWords)
+	runes := getCount(filename, bufio.ScanRunes)
+
+	fmt.Printf("%v %v %v %v %s", bytes, lines, words, runes, filename)
 }
