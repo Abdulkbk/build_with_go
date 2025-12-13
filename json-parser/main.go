@@ -31,11 +31,70 @@ func main() {
 	var firstChar string
 	var lastChar string
 
+	var stack []string
+
 	for scanner.Scan() {
-		if firstChar == "" {
-			firstChar = scanner.Text()
+		el := scanner.Text()
+
+		if el == "\n" || el == " " {
+			continue
 		}
-		lastChar = scanner.Text()
+
+		if firstChar == "" {
+			firstChar = el
+		}
+
+		lastChar = el
+
+		if el == "{" || el == "," {
+			stack = append(stack, el)
+
+			continue
+		}
+
+		if el == ":" {
+			lastElIdx := len(stack) - 1
+			lastEl := stack[lastElIdx]
+
+			if lastEl != "{" {
+				fmt.Println(stack)
+				log.Fatal("parsing failed: `:`")
+			}
+
+			stack = append(stack, el)
+
+			continue
+		}
+
+		if el == "\"" {
+			lastElIdx := len(stack) - 1
+			lastEl := stack[lastElIdx]
+
+			if lastEl == ":" || lastEl == "\"" || lastEl == "," {
+				stack = append(stack[:lastElIdx], stack[lastElIdx+1:]...)
+				continue
+			}
+
+			stack = append(stack, el)
+
+			continue
+		}
+
+		if el == "}" && len(stack) > 1 {
+			lastElIdx := len(stack) - 1
+			stack = append(stack[:lastElIdx], stack[lastElIdx+1:]...)
+
+			lastElIdx = len(stack) - 1
+			lastEl := stack[lastElIdx]
+			if lastEl != "{" {
+				fmt.Println(lastEl)
+				log.Fatal("invalid json")
+			}
+
+			stack = append(stack[:lastElIdx], stack[lastElIdx+1:]...)
+
+			continue
+		}
 	}
 
 	if firstChar != "{" || lastChar != "}" {
